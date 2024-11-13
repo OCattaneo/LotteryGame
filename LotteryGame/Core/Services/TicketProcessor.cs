@@ -16,7 +16,7 @@ namespace Core.Services
             Array.Fill(ticketCounts, 0);
             ticketCounts[0] = IsValid(count, balanceArray[0]);
 
-            var playerCount = _random.Next(1, 14);
+            var playerCount = _random.Next(9, 14);
 
             foreach(var player in PickPlayers(playerCount))
             {
@@ -33,12 +33,7 @@ namespace Core.Services
 
             while (nums.Count < count)
             {
-                int num;
-                do
-                {
-                    num = _random.Next(1, 14);
-                } while (nums.Contains(num));
-                nums.Add(num);
+                nums.Add(_random.Next(1, 14));
             }
 
             return nums;
