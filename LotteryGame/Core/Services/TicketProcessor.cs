@@ -1,12 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Core.Services
 {
-    internal class TicketProcessor
+    public class TicketProcessor
     {
+        private readonly Random _random = new();
+
+        public TicketProcessor() 
+        { 
+        }
+
+        public int[] Process(int count, decimal[] balanceArray)
+        {
+            var ticketCounts = new int[15];
+            Array.Fill(ticketCounts, 0);
+            ticketCounts[0] = IsValid(count, balanceArray[0]);
+
+            var playerCount = _random.Next(1, 14);
+
+            foreach(var player in PickPlayers(playerCount))
+            {
+                ticketCounts[player] = IsValid(_random.Next(1, 10), balanceArray[player]);
+            }
+
+            //return adjusted balanceArray, TicketCount per player (assigned in array)
+            return ticketCounts;
+        }
+
+        private List<int> PickPlayers(int count)
+        {
+            var nums = new List<int>();
+
+            while (nums.Count < count)
+            {
+                int num;
+                do
+                {
+                    num = _random.Next(1, 14);
+                } while (nums.Contains(num));
+                nums.Add(num);
+            }
+
+            return nums;
+        }
+
+        private int IsValid(int count, decimal balance)
+        {
+            // 0 < i < 10
+            // cost <  balance
+            if (count > 10)
+            {
+                count = 10;
+            }
+
+            if (count > balance)
+            {
+                return (int)Math.Floor(balance);
+            }
+
+            return count;
+        }
     }
 }
