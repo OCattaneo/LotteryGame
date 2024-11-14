@@ -18,31 +18,16 @@ namespace Core.Services
 
             var playerCount = _random.Next(9, 14);
 
-            foreach(var player in PickPlayers(playerCount))
+            for (int i = 1; i <= playerCount; i++ )
             {
-                ticketCounts[player] = IsValid(_random.Next(1, 10), balanceArray[player]);
+                ticketCounts[i] = IsValid(_random.Next(1, 10), balanceArray[i]);
             }
 
-            //return adjusted balanceArray, TicketCount per player (assigned in array)
             return ticketCounts;
-        }
-
-        private List<int> PickPlayers(int count)
-        {
-            var nums = new List<int>();
-
-            while (nums.Count < count)
-            {
-                nums.Add(_random.Next(1, 14));
-            }
-
-            return nums;
         }
 
         private int IsValid(int count, decimal balance)
         {
-            // 0 < i < 10
-            // cost <  balance
             if (count > 10)
             {
                 count = 10;

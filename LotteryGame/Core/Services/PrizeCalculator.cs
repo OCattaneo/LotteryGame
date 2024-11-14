@@ -60,7 +60,6 @@
             var nums = new List<int>();
             var ticketNums = new List<int>();
 
-            //need to sort this out
             while (nums.Count < count)
             {
                 int rnd = _random.Next(1, total);
@@ -70,14 +69,6 @@
                     nums.Add(num);
                     ticketNums.Add(rnd);
                 }
-
-                //int num = 0;
-                //do
-                //{
-                //    num = _random.Next(1, total);
-                //} while (used.Contains(GetWinner(num, ticketCounts)));
-                //nums.Add(GetWinner(num, ticketCounts));
-                //used.Add(GetWinner(num, ticketCounts));
             }
 
             return nums;
