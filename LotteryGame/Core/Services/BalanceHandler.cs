@@ -29,5 +29,20 @@
             }
             return (balanceArray, houseBalance);
         }
+
+        public bool ValidGame(decimal[] balanceArray)
+        {
+            var count = 0;
+            foreach(var balance in balanceArray)
+            {
+                if (balance > 1)
+                {
+                    count++;
+                }
+            }
+
+            if (count >= 10) return true;
+            return false;
+        }
     }
 }

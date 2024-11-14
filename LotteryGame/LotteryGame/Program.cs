@@ -1,4 +1,5 @@
 ﻿using Core.Services;
+using System.Text.RegularExpressions;
 
 
 var ticketProcessor = new TicketProcessor();
@@ -49,15 +50,19 @@ while(true)
     Console.WriteLine(GetWinners(winners[2], false));
     Console.WriteLine("A big congratulations to all of our winners!\r\n");
     Console.WriteLine("****************************************************************");
-    //Calculate user & CPU new balances.
+    
     (balanceArray, houseBalance) = balanceHandler.AddPrizeWinnings(winners, balanceArray, houseBalance);
     Console.WriteLine($"Current House Revenue: ${houseBalance}\r\n");
 
-    if (balanceArray[0] < 1) // exit if balance < $1
+    if (balanceArray[0] < 1)
     {
-        Console.WriteLine("Sorry, your balance is below the minimum limit.\nPlease press any key to exit.");
+        Console.WriteLine($"Sorry, your balance of {balanceArray[0]} is below the minimum limit.\nPlease press any key to exit.");
         Console.ReadKey();
         return;
+    }
+    if (!balanceHandler.ValidGame(balanceArray))
+    {
+        Array.Fill(balanceArray, 10.00m, 1, balanceArray.Length - 1);
     }
     Console.WriteLine("Press any key to continue."); // or exit key
     validInput = false;
@@ -68,13 +73,15 @@ while(true)
 string GetWinners(List<KeyValuePair<int, decimal>> winners, bool isSecondary)
 {
     var playerString = "Player";
+    var hasString = "has";
     if (winners.Count > 1)
     {
         playerString = "Players";
+        hasString = "have";
     }
 
-    var players = string.Join(", ", winners.Select(x => x.Key).Distinct());
-    players = players.Replace("0", $"{userName}");
+    var players = string.Join(", ", winners.Select(x => x.Key).OrderBy(x => x)); //Can distint if only want to mention each winner once, but this makes more sense given winnings display.
+    players = Regex.Replace(players, @"\b0\b", $"{userName}");
 
     var tier = "Second";
     if (!isSecondary)
@@ -82,7 +89,7 @@ string GetWinners(List<KeyValuePair<int, decimal>> winners, bool isSecondary)
         tier = "Third";
     }
 
-    var response = $"{playerString} {players} have won the {tier} Tier Prize, winning ${winners.Select(x => x.Value).FirstOrDefault()} each!\r\n";
+    var response = $"{playerString} {players} {hasString} won the {tier} Tier Prize, winning ${winners.Select(x => x.Value).FirstOrDefault()} each!\r\n";
     return response;
 }
 
