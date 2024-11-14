@@ -64,7 +64,7 @@ while(true)
     {
         Array.Fill(balanceArray, 10.00m, 1, balanceArray.Length - 1);
     }
-    Console.WriteLine("Press any key to continue."); // or exit key
+    Console.WriteLine("Press any key to continue.");
     validInput = false;
     Console.ReadKey();
 
